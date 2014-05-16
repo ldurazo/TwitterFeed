@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 
@@ -26,7 +25,7 @@ public class MainActivity extends ListActivity {
         ArrayList<Tweet> items = new ArrayList<Tweet>();
         items.add(tweet);
 
-        TweetListAdaptor adaptor = new TweetListAdaptor(this,R.layout.list_item, items);
+        TweetListAdaptor adaptor = new TweetListAdaptor(this, R.layout.list_item, items);
         setListAdapter(adaptor);
     }
 

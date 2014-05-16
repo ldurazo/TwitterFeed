@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">TwitterFeed</string>
+    <string name="hello_world">Hello</string>
     <string name="action_settings">Settings</string>
 
 </resources>
