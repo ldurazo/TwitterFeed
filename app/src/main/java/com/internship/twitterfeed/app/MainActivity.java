@@ -10,7 +10,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -30,56 +29,18 @@ public class MainActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new MyTask().execute();
+        Tweet tweet = new Tweet();
+        tweet.author = "test1";
+        tweet.content = "asdfo134905805sfasdlfaksldfjaklsdfj304958";
+        ArrayList<Tweet> items = new ArrayList<Tweet>();
+        items.add(tweet);
+
+        TweetListAdaptor adaptor = new TweetListAdaptor(this,R.layout.list_item, items);
+        setListAdapter(adaptor);
 
     }
 
-    private class MyTask extends AsyncTask<Void, Void, Void> {
-        private ProgressDialog progressDialog;
 
-        protected void onPreExecute() {
-            progressDialog = ProgressDialog.show(MainActivity.this,
-                    "", "Loading. Please wait...", true);
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            try {
-
-                HttpClient hc = new DefaultHttpClient();
-                HttpGet get = new
-                        HttpGet("http://search.twitter.com/search.json?q=android");
-
-                HttpResponse rp = hc.execute(get);
-
-                if(rp.getStatusLine().getStatusCode() == HttpStatus.SC_OK)
-                {
-                    String result = EntityUtils.toString(rp.getEntity());
-                    JSONObject root = new JSONObject(result);
-                    JSONArray sessions = root.getJSONArray("results");
-                    for (int i = 0; i < sessions.length(); i++) {
-                        JSONObject session = sessions.getJSONObject(i);
-
-                        Tweet tweet = new Tweet();
-                        tweet.content = session.getString("text");
-                        tweet.author = session.getString("from_user");
-                        tweets.add(tweet);
-                    }
-                }
-            } catch (Exception e) {
-                Log.e("TwitterFeedActivity", "Error loading JSON", e);
-            }
-            return null;
-
-        }
-        @Override
-        protected void onPostExecute(Void result) {
-            progressDialog.dismiss();
-            setListAdapter(new TweetListAdaptor(
-                    MainActivity.this, R.layout.list_item, tweets));
-        }
-
-    }
 
     private class TweetListAdaptor extends ArrayAdapter<Tweet> {
 
@@ -105,8 +66,8 @@ public class MainActivity extends ListActivity {
 
             TextView tt = (TextView) v.findViewById(R.id.toptext);
             TextView bt = (TextView) v.findViewById(R.id.bottomtext);
-            tt.setText(o.content);
-            bt.setText(o.author);
+            bt.setText(o.content);
+            tt.setText(o.author);
 
             return v;
         }
